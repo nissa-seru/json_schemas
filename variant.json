@@ -1,0 +1,144 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ship_variant",
+  "description": "A schema representing the structure of a ship variant file.",
+  "type": "object",
+  "required": ["variantId", "hullId", "displayName"],
+  "additionalProperties": false,
+  "properties": {
+    "variantId": {
+      "$ref": "./lib.gen.schema.json#/definitions/id"
+    },
+    "hullId": {
+      "$ref": "./lib.gen.schema.json#/definitions/hullIdEnum"
+    },
+    "displayName": {
+      "type": "string",
+      "documentation": {
+        "description": "The display name of the variant shown in-game. (Insert where this text is shown relative to the hull name)"
+      }
+    },
+    "goalVariant": {
+      "type": "boolean",
+      "documentation": {
+        "description": "Indicates whether this variant appears as an option in the autofit menu for ships of the same <code>hullId</code>"
+      }
+    },
+    "fluxCapacitors": {
+      "$ref": "./lib.gen.schema.json#/definitions/nonNegativeInteger",
+      "documentation": {
+        "description": "Number of flux capacitors installed on the ship."
+      }
+    },
+    "fluxVents": {
+      "$ref": "./lib.gen.schema.json#/definitions/nonNegativeInteger",
+      "documentation": {
+        "description": "Number of flux vents installed on the ship."
+      }
+    },
+    "hullMods": {
+      "type": "array",
+      "documentation": {
+        "description": "List of hullmods installed on the variant; cumulative with <code>builtInMods</code> specified for the parent <code>hullId</code>"
+      },
+      "items": {
+        "$ref": "./lib.gen.schema.json#/definitions/hullModId"
+      },
+    },
+    "permaMods": {
+      "type": "array",
+      "documentation": {
+        "description": "List of hullmods built into the variant that cannot be removed",
+        "reqs_and_guidelines": ["Each hullmod listed here must also be present in either <code>hullMods</code> of the variant or in <code>builtInMods</code> of the parent <code>hullId</code>"],
+      },
+      "items": {
+        "$ref": "./lib.gen.schema.json#/definitions/hullModId"
+      },
+    },
+    "sMods": {
+      "type": "array",
+      "documentation": {
+        "description": "List of s-mods built into the variant",
+        "reqs_and_guidelines": ["Each hullmod listed here must also be present in either <code>permaMods</code> of the variant or in <code>builtInMods</code> of the parent <code>hullId</code>"]
+      },
+      "items": {
+        "$ref": "./lib.gen.schema.json#/definitions/hullModId"
+      },
+    },
+    "suppressedMods": {
+      "type": "array",
+      "documentation": {
+        "description": "List of mods specified in <code>builtInMods</code> of <code>hullId</code> that are not built into the variant."
+      },
+      "items": {
+        "$ref": "./lib.gen.schema.json#/definitions/hullModId"
+      },
+    },
+    "weaponGroups": {
+      "type": "array",
+      "documentation": {
+        "description": "List of weapon groups configured on the ship."
+      },
+      "required": [
+        "mode", "weapons"
+      ],
+      "items": {
+        "type": "object",
+        "properties": {
+          "autofire": {
+            "type": "boolean",
+            "documentation": {
+              "description": "Optional. Configures autofire toggle for this weapon group; defaults to <code>false</code>"
+            }
+          },
+          "mode": {
+            "$ref": "./lib.gen.schema.json#/definitions/weaponGroupFiringModeEnum"
+          },
+          "weapons": {
+            "type": "object",
+            "propertyNames": {
+              "$ref": "./lib.gen.schema.json#/definitions/weaponSlotId"
+            },
+            "additionalProperties": {
+              "$ref": "./lib.gen.schema.json#/definitions/weaponIdEnum"
+            },
+            "documentation": {
+              "description": "Mapping of weapon slot ID to weapon ID for each weapon in this weapon group.",
+              "examples": [
+                {
+                  "WS0019": "uaf_herexa"
+                }
+              ],
+            }
+          }
+        },
+      },
+    },
+    "modules": {
+      "type": "object",
+      "documentation": {
+        "description": "Mapping of weapon slot ID to module ID for each module installed on the ship.",
+        "examples": [
+          {
+            "WS0019": "uaf_zepporia_module_1"
+          }
+        ],
+      },
+      "propertyNames": {
+        "$ref": "./lib.gen.schema.json#/definitions/weaponSlotId"
+      },
+      "additionalProperties": {
+        "$ref": "./lib.gen.schema.json#/definitions/id"
+      },
+    },
+    "wings": {
+      "type": "array",
+      "documentation": {
+        "description": "List of fighter wings equipped on the ship."
+      },
+      "items": {
+        "$ref": "./lib.gen.schema.json#/definitions/wingIdEnum"
+      },
+    }
+  },
+}

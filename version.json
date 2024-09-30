@@ -1,0 +1,87 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "mod_version_file",
+  "description": "A schema representing the structure of a mod version file.",
+  "type": "object",
+  "required": ["masterVersionFile", "modVersion", "modName"],
+  "additionalProperties": false,
+  "properties": {
+    "masterVersionFile": {
+      "type": "string",
+      "format": "uri",
+      "documentation": {
+        "description": "URL pointing to the master version file used for update checking. Once a mod author has set up Version Checker, it will compare users' mod version against the one at this URL and alert them if there is an update.",
+        "examples": [
+          "\"https://raw.githubusercontent.com/Histidine91/Nexerelin/release/nexerelin.version\""
+        ],
+        "other_link": {
+          "text": "Version Checker Setup Guide",
+          "url": "https://fractalsoftworks.com/forum/index.php?topic=8181.0"
+        }
+      }
+    },
+    "modName": {
+      "$ref": "./lib.gen.schema.json#/definitions/modName"
+    },
+    "modThreadId": {
+      "type": "integer",
+      "documentation": {
+        "description": "Optional. ID of a mod's thread on the Fractal Softworks forum; enables users to navigate directly to the forum thread from the Version Checker interface in-game.",
+        "examples": [
+          "9175"
+        ],
+        "other_link": {
+          "text": "Version Checker Setup Guide",
+          "url": "https://fractalsoftworks.com/forum/index.php?topic=8181.0"
+        }
+      }
+    },
+    "modNexusId": {
+      "type": "integer",
+      "documentation": {
+        "description": "Optional. ID of a mod's thread on NexusMods; enables users to navigate directly to the NexusMods page from the Version Checker interface in-game",
+        "examples": [
+          "28"
+        ],
+        "wiki_link": {
+          "wiki_page": "Mod_Version_File",
+          "wiki_section": "modNexusId"
+        }
+      }
+    },
+    "modVersion": {
+      "$ref": "./lib.gen.schema.json#/definitions/version"
+    },
+    "directDownloadURL": {
+      "type": "string",
+      "format": "uri",
+      "documentation": {
+        "description": "Optional. URL that causes direct download of the mod when navigated to.",
+        "reqs_and_guidelines": [
+          "Use this field specifically links that enable direct download of the mod files; mod-managers such as TriOS to enable users to update multiple mods at once, and functionality is degraded substantially if additional clicks are required for download after navigating to the link."
+        ],
+        "examples": [
+          "\"https://github.com/Histidine91/Nexerelin/releases/download/v0.11.2c/Nexerelin_0.11.2c.zip\""
+        ],
+        "other_link": {
+          "text": "Version Checker Setup Guide",
+          "url": "https://fractalsoftworks.com/forum/index.php?topic=8181.0"
+        }
+      }
+    },
+    "changelogURL": {
+      "type": "string",
+      "format": "uri",
+      "documentation": {
+        "description": "Optional. URL of the changelog for a mod. Used by Version Checker and mod-managers such as TriOS to display changelog to user.",
+        "examples": [
+          "\"https://raw.githubusercontent.com/Histidine91/Nexerelin/release/changelog.txt\""
+        ],
+        "other_link": {
+          "text": "Version Checker Setup Guide",
+          "url": "https://fractalsoftworks.com/forum/index.php?topic=8181.0"
+        }
+      }
+    }
+  },
+}

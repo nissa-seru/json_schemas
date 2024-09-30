@@ -1,0 +1,188 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ship_data",
+  "description": "A schema representing the structure of a ship data file.",
+  "type": "object",
+  "required": [
+    "hullId", "hullName", "hullSize", "shieldCenter", "shieldRadius", "spriteName", "style", "height", "width", "center", "collisionRadius", "bounds"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "hullName": {
+      "$ref": "./lib.gen.schema.json#/definitions/name"
+    },
+    "hullId": {
+      "$ref": "./lib.gen.schema.json#/definitions/id"
+    },
+    "hullSize": {
+      "$ref": "./lib.gen.schema.json#/definitions/hullSize"
+    },
+    "spriteName": {
+      "$ref": "./lib.gen.schema.json#/definitions/path"
+    },
+    "style": {
+      "$ref": "./lib.gen.schema.json#/definitions/hullStyleEnum"
+    },
+    "height": {
+      "$ref": "./lib.gen.schema.json#/definitions/height",
+    },
+    "width": {
+      "$ref": "./lib.gen.schema.json#/definitions/width",
+    },
+    "center": {
+      "$ref": "./lib.gen.schema.json#/definitions/pairOfXY",
+      "documentation": {
+        "description": "The center point of the ship sprite in [x, y] coordinates, relative to the bottom-left corner of the sprite.",
+        "examples": [[65, 40]],
+      }
+    },
+    "moduleAnchor": {
+      "$ref": "./lib.gen.schema.json#/definitions/pairOfXY",
+      "documentation": {
+        "description": "If this ship is placed in a module slot - x, y coordinate describing the location of the center of this ship relative to the location of the module slot that it is placed in.",
+        "examples": [[65, 40]],
+      }
+    },
+    "collisionRadius": {
+      "$ref": "./lib.gen.schema.json#/definitions/nonNegativeNumber",
+      "documentation": {
+        "description": "The collision radius of the ship; used for in-game collision detection.",
+      }
+    },
+    "shieldCenter": {
+      "$ref": "./lib.gen.schema.json#/definitions/XYPairRelativeToCenter",
+    },
+    "coversColor": {
+      "$ref": "./lib.gen.schema.json#/definitions/coversColorString"
+    },
+    "shieldRadius": {
+      "$ref": "./lib.gen.schema.json#/definitions/nonNegativeNumber",
+      "documentation": {
+        "description": "The radius of the ship's shield, in pixels.",
+      }
+    },
+    "viewOffset": {
+      "type": "number",
+      "documentation": {
+        "description": "The view offset for the ship sprite in the game.",
+        "reqs_and_guidelines": ["Usually <code>0</code>",],
+      }
+    },
+    "builtInMods": {
+      "uniqueItems": true,
+      "type": "array",
+      "documentation": {
+        "description": "A list of hullmod IDs indicating mods that are built into the ship and cannot be removed.",
+      },
+      "items": {
+        "$ref": "./lib.gen.schema.json#/definitions/hullModIdEnum"
+      },
+    },
+    "builtInWings": {
+      "type": "array",
+      "documentation": {
+        "description": "A list of wing IDs indicating wings that are built into the ship and cannot be removed. Each element corresponds to one wing slot; hence, duplicate entries indicate that more than one wing of the ID is built into the hull.",
+      },
+      "items": {
+        "$ref": "./lib.gen.schema.json#/definitions/wingIdEnum"
+      },
+    },
+    "builtInWeapons": {
+      "type": "object",
+      "propertyNames": {
+        "$ref": "./lib.gen.schema.json#/definitions/weaponSlotId"
+      },
+      "additionalProperties": {
+        "$ref": "./lib.gen.schema.json#/definitions/weaponIdEnum"
+      },
+      "documentation": {
+        "description": "A mapping of weapon slot IDs to weapon IDs for built-in weapons.",
+        "examples": [
+          {
+            "WS0001": "A_S-F_paladin_tri_mod",
+            "WS0002": "A_S-F_paladin_tri_mod"
+          }
+        ],
+      }
+    },
+    "weaponSlots": {
+      "type": "array",
+      "documentation": {
+        "description": "A list of weapon slots on the ship",
+      },
+      "required": ["id", "size", "type", "mount", "arc", "angle", "locations"],
+      "additionalProperties": false,
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "$ref": "./lib.gen.schema.json#/definitions/name"
+          },
+          "size": {
+            "$ref": "./lib.gen.schema.json#/definitions/weaponSizeEnum"
+          },
+          "type": {
+            "$ref": "./lib.gen.schema.json#/definitions/weaponTypeEnum"
+          },
+          "mount": {
+            "$ref": "./lib.gen.schema.json#/definitions/mountTypeEnum"
+          },
+          "arc": {
+            "$ref": "./lib.gen.schema.json#/definitions/arc"
+          },
+          "angle": {
+            "$ref": "./lib.gen.schema.json#/definitions/angle"
+          },
+          "locations": {
+            "$ref": "./lib.gen.schema.json#/definitions/weaponLocation"
+          },
+        },
+      },
+    },
+    "engineSlots": {
+      "type": "array",
+      "documentation": {
+        "description": "A list of engine slots on the ship."
+      },
+      "required": ["location", "length", "width", "angle", "contrailSize", "style"],
+      "additionalProperties": false,
+      "items": {
+        "type": "object",
+        "properties": {
+          "location": {
+            "$ref": "./lib.gen.schema.json#/definitions/XYPairRelativeToCenter",
+          },
+          "length": {
+            "$ref": "./lib.gen.schema.json#/definitions/length",
+          },
+          "width": {
+            "$ref": "./lib.gen.schema.json#/definitions/width",
+          },
+          "angle": {
+            "$ref": "./lib.gen.schema.json#/definitions/angle"
+          },
+          "contrailSize": {
+            "$ref": "./lib.gen.schema.json#/definitions/width"
+          },
+          "style": {
+            "$ref": "./lib.gen.schema.json#/definitions/weaponStyleEnum"
+          }
+        },
+      },
+    },
+    "bounds": {
+      "type": "array",
+      "items": {
+        "type": "number"
+      },
+      "documentation": {
+        "description": "A flattened list of [x, y] coordinates defining the ship's collision bounds, as x, y coordinates relative to the ship center.",
+        "examples": [
+          [
+            23, 58, 33, 0, 23, -58, 7, -62, -25, -45, -26, -25, -19, -23, -22, -13, -35, -9, -35, 9, -22, 13, -19, 23, -26, 25, -25, 46, 7, 62
+          ]
+        ],
+      }
+    }
+  },
+}

@@ -1,0 +1,185 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "mod_info",
+  "description": "A schema representing the structure of a Starsector mod configuration file.",
+  "type": "object",
+  "required": ["id", "name", "version", "description", "gameVersion"],
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "$ref": "./lib.gen.schema.json#/definitions/modId"
+    },
+    "name": {
+      "$ref": "./lib.gen.schema.json#/definitions/modName",
+      "documentation": {
+        "description": "Name of mod as shown to user in-game",
+        "reqs_and_guidelines": [
+          "Mods load in alphabetical order per their <code>name</code>. This is not load-bearing for the supermajority of mods (only a few libraries, at time of writing.)",
+        ],
+        "examples": [
+          "\"Persean Chronicles\"", "\"Supply Forging\""
+        ],
+        "other_link": {
+          "text": "mod_info (by Alex)",
+          "url": "https://fractalsoftworks.com/forum/index.php?topic=4760"
+        }
+      }
+    },
+    "author": {
+      "type": "string",
+      "documentation": {
+        "description": "Name of mod author as shown to user in the mod loader following the description.",
+        "examples": [
+          "\"Wisp\"", "\"Techpriest\""
+        ],
+        "other_link": {
+          "text": "mod_info (by Alex)",
+          "url": "https://fractalsoftworks.com/forum/index.php?topic=4760"
+        }
+      }
+    },
+    "utility": {
+      "type": "boolean",
+      "documentation": {
+        "description": "If <code>true</code>, Starsector will load this mod alongside mods with <code>totalConversion</code> set to <code>true</code>. Defaults to <code>false</code>.",
+        "other_link": {
+          "text": "mod_info (by Alex)",
+          "url": "https://fractalsoftworks.com/forum/index.php?topic=4760"
+        }
+      }
+    },
+    "version": {
+      "$ref": "./lib.gen.schema.json#/definitions/version"
+    },
+    "description": {
+      "type": "string",
+      "documentation": {
+        "description": "Description of a mod as it appears in the mod loader",
+        "reqs_and_guidelines": [
+          "Escape quotation marks with a single backslash, like this: <code>\\\"</code>", "Write newlines as a single backslash followed by 'n', like this: <code>\\n</code>",
+        ],
+        "examples": [
+          "\"CoolMod adds ships and weapons and all kinds of cool stuff.\"", "\"HotMod is too hot for a single paragraph. \\n\\n So here is another one!\""
+        ],
+        "other_link": {
+          "text": "mod_info (by Alex)",
+          "url": "https://fractalsoftworks.com/forum/index.php?topic=4760"
+        }
+      }
+    },
+    "gameVersion": {
+      "type": "string",
+      "documentation": {
+        "description": "Most recent version of Starsector that the mod is compatible with; the game will not load mods that specify an older version than the one that the user is running.",
+        "reqs_and_guidelines": [
+          "Specify major version of the game (ie <code>0.97a</code>) and, optionally, the release candidate (ie <code>-RC11</code>).",
+        ],
+        "examples": [
+          "\"0.97a-RC11\"", "\"0.95a\""
+        ],
+        "other_link": {
+          "text": "mod_info (by Alex)",
+          "url": "https://fractalsoftworks.com/forum/index.php?topic=4760"
+        }
+      },
+    },
+    "dependencies": {
+      "type": "array",
+      "uniqueItems": true,
+      "documentation": {
+        "description": "The set of other mods that the user must have installed for a mod to work correctly.",
+        "reqs_and_guidelines": [
+          "Specifying a particular version of a dependency mod is currently prohibited as it can cause Starsector to refuse to load your mod when a dependency updates."
+        ],
+        "other_link": {
+          "text": "mod_info (by Alex)",
+          "url": "https://fractalsoftworks.com/forum/index.php?topic=4760"
+        }
+      },
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "$ref": "./lib.gen.schema.json#/definitions/modId"
+          },
+          "name": {
+            "$ref": "./lib.gen.schema.json#/definitions/modName"
+          }
+        },
+        "required": [
+          "id", "name"
+        ],
+        "prohibited": [
+          "version"
+        ]
+      },
+    },
+    "jars": {
+      "type": "array",
+      "uniqueItems": true,
+      "documentation": {
+        "description": "List of paths (relative to the mod root); each path indicates a single .jar file that will be loaded by the game during the initial loading-bar screen.",
+        "reqs_and_guidelines": [
+          "Both or neither of modPlugin and jars should be specified; if one is specified without the other, the mod will not load successfully."
+        ],
+        "other_link": {
+          "text": "mod_info (by Alex)",
+          "url": "https://fractalsoftworks.com/forum/index.php?topic=4760"
+        }
+      },
+      "items": {
+        "$ref": "./lib.gen.schema.json#/definitions/filePath"
+      }
+    },
+    "modPlugin": {
+      "type": "string",
+      "pattern": "^[a-zA-Z_][a-zA-Z0-9_]*(\\.[a-zA-Z_][a-zA-Z0-9_]*)*$",
+      "documentation": {
+        "description": "Optional. Fully qualified path to a ModPlugin class extending <code>com.fs.starfarer.api.BasePlugin</code> interface which is called by the game to run a mod.",
+        "reqs_and_guidelines": [
+          "If <code>modPlugin</code> is specified, <code>jars</code> should also be specified so that the game knows where to find the jar containing the relevant class file."
+        ],
+        "examples": [
+          "\"wisp.perseanchronicles.PerseanChroniclesModPlugin\"", "\"data.plugins.SFPlugin\""
+        ],
+        "other_link": {
+          "text": "mod_info (by Alex)",
+          "url": "https://fractalsoftworks.com/forum/index.php?topic=4760"
+        }
+      }
+    },
+    "totalConversion": {
+      "type": "boolean",
+      "documentation": {
+        "description": "If <code>true</code>, Starsector will not load any other mods (except for utility mods) at the same time. The game will also skip loading ship variants that refer to any <code>hullId</code> that no longer exist.",
+        "other_link": {
+          "text": "mod_info (by Alex)",
+          "url": "https://fractalsoftworks.com/forum/index.php?topic=4760"
+        }
+      }
+    },
+    "replace": {
+      "uniqueItems": true,
+      "type": "array",
+      "documentation": {
+        "description": "List of paths (relative to starsector-core) of base game files that will not be loaded by Starsector alongside the mod",
+        "reqs_and_guidelines": [
+          "Graphics, sound, and .java files are automatically replaced and need not be specified here"
+        ],
+        "other_link": {
+          "text": "mod_info (by Alex)",
+          "url": "https://fractalsoftworks.com/forum/index.php?topic=4760"
+        }
+      },
+      "items": {
+        "$ref": "./lib.gen.schema.json#/definitions/filePath"
+      }
+    },
+    suppressVCUnsupported: {
+      type: "boolean",
+      "documentation": {
+        "description": "If set to <code>true</code>, suppresses Version Checker warning that is otherwise raised when a mod does not include a .version file. Intended primarily for unpublished mods to prevent warning spam.",
+      }
+    }
+  },
+}
