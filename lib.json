@@ -1,0 +1,379 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "definitions": {
+    "name": {
+      "type": "string",
+      "documentation": {
+        "description": "Name of something in the game (weapon, ship, skill, etc) as displayed to the user",
+        "examples": [
+          "\"Mk2 Gigacannon\"", "\"My Little Pony\""
+        ],
+      },
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[^ ]*$",
+      "documentation": {
+        "description": "The set of characters that Starsector code uses to refer to something in the game (weapon, ship, skill, etc.)",
+        "reqs_and_guidelines": [
+          "It is very important that IDs be unique, both with regards to other IDs in your own mod as well as those in other mods", "Avoid spaces",
+        ],
+        "examples": [
+          "\"nissa_coolMod_bigCannon\"", "\"nissa_hotMod_overpoweredWing\""
+        ],
+      }
+    },
+    "weaponSlotId": {
+      "type": "string",
+      "documentation": {
+        "description": "Identifier for a specific weapon slot; customarily follows the format <code>WS####</code - see examples below.>",
+        "examples": ["\"WS0001\"", "\"WS0002\"", "\"WS0014\"", "\"WS0021\""],
+      }
+    },
+    "modName": {
+      "type": "string",
+      "documentation": {
+        "description": "Name of mod as shown to user in-game",
+        "examples": [
+          "\"Persean Chronicles\"", "\"Supply Forging\""
+        ],
+      },
+    },
+    "filePath": {
+      "type": "string",
+      "documentation": {
+        "description": "Path of a file relative to Starsector/mods or Starsector/starsector-core, depending on whether it is a reference to a vanilla file or a mod file",
+        "examples": [
+          "\"data/weapons/proj/breach_srm.proj\"", "\"data/characters/skills/helmsmanship.skill\""
+        ],
+      }
+    },
+    "modId": {
+      "type": "string",
+      "pattern": "^[^ ]*$",
+      "documentation": {
+        "description": "Identifier for mod in code",
+        "reqs_and_guidelines": [
+          "Must be unique - ie not identical to that of any other mod", "Should be human readable to facilitate debugging", "Best practice is to use the format <code>yourName_modName</code>"
+        ],
+        "examples": [
+          "\"wisp_perseanchronicles\"", "\"timid_supply_forging\""
+        ],
+        "other_link": {
+          "text": "mod_info (by Alex)",
+          "url": "https://fractalsoftworks.com/forum/index.php?topic=4760"
+        }
+      }
+    },
+    "major": {
+      "type": "integer",
+      "documentation": {
+        "description": "Major version of a mod. Increment for changes to your mod plugin/API that may impact cross-mod compatibility with any mods invoking methods of the current major version of your mod",
+        "wiki_link": {
+          "wiki_page": "Mod_Info.json_Overview",
+          "wiki_section": "version"
+        },
+      }
+    },
+    "minor": {
+      "type": "integer",
+      "documentation": {
+        "description": "Minor version of a mod. Increment for changes that may make the new version incompatible with saves running the current minor version of your mod",
+        "wiki_link": {
+          "wiki_page": "Mod_Info.json_Overview",
+          "wiki_section": "version"
+        },
+      }
+    },
+    "patch": {
+      "type": ["integer", "string"],
+      "documentation": {
+        "description": "Patch version of a mod. Increment for changes that maintain compatibility with saves running the same minor version of your mod",
+        "wiki_link": {
+          "wiki_page": "Mod_Info.json_Overview",
+          "wiki_section": "version"
+        },
+      }
+    },
+    "version": {
+      "type": ["object", "string"],
+      "minItems": 1,
+      "documentation": {
+        "description": "Version of the mod, expressed in SemVer format (major/minor/patch); game uses this to determine whether the set of mods associated with a save-file match those that the player currently has loaded. Can be expressed via major/minor/patch properties or as a string",
+        "examples": [
+          "\"1.2.3\"", {
+            "major": "1",
+            "minor": "9",
+            "patch": "2"
+          }
+        ]
+      },
+      "properties": {
+        "major": {
+          "$ref": "#/definitions/major"
+        },
+        "minor": {
+          "$ref": "#/definitions/minor"
+        },
+        "patch": {
+          "$ref": "#/definitions/patch"
+        }
+      },
+    },
+    "hullIdEnum": {
+      "anyOf": [
+        {
+          "type": "string",
+          "enum": [
+            "afflictor", "apex", "apogee", "aspect", "astral", "atlas", "atlas2", "aurora", "bastillon", "berserker", "brawler", "brilliant", "broadsword", "buffalo", "buffalo2", "centurion", "champion", "claw", "cobra", "colossus", "colossus2", "colossus3", "condor", "conquest", "crig", "dagger", "defender", "dem_drone", "station_derelict_survey_mothership", "derelict_mothership_bow_module", "derelict_mothership_pod_engine_left", "derelict_mothership_pod_m_left", "derelict_mothership_pod_m_right", "derelict_mothership_pod_s_right", "derelict_mothership_sensor_mast", "dominator", "doom", "dram", "drone_assault", "drone_borer", "drone_pd", "drone_pd_midline", "drone_sensor", "drone_terminator", "drover", "eagle", "enforcer", "eradicator", "facet", "falcon", "flare", "flash", "fulgent", "fury", "gargoyle", "gemini", "gladius", "glimmer", "gremlin", "grendel", "gryphon", "guardian", "hammerhead", "harbinger", "hermes", "heron", "hoplon", "hound", "hyperion", "invictus", "kite", "lasher", "legion", "longbow", "lumen", "lux", "manticore", "medusa", "mercury", "merlon", "mining_drone", "module_armour1", "module_armour2", "module_armour3", "module_armour4", "module_armour5", "module_bastion1_lowtech", "module_bastion_pd1", "module_bastion_pd1", "module_blocker1", "module_blocker2", "module_blocker2b", "module_blocker2c", "module_citadel1_lowtech", "module_decor_midline1", "module_decor_midline2", "module_hightech_armour", "module_hightech_attack", "module_hightech_citadel", "module_hightech_decor", "module_hightech_hangar", "module_hightech_shield", "module_hightech_strut", "module_large1_lowtech", "module_large2_lowtech", "module_midline_bastion", "module_midline_broadside", "module_midline_citadel", "module_midline_support", "monitor", "mora", "mudskipper", "mule", "nebula", "nova", "odyssey", "omen", "onslaught", "ox", "paragon", "pegasus", "perdition", "phaeton", "phantom", "picket", "piranha", "platform1", "prometheus", "prometheus2", "radiant", "rampart", "ravelin", "remnant_armour1", "remnant_armour2", "remnant_armour3", "remnant_hangar1", "remnant_shield1", "remnant_shield2", "remnant_station1", "remnant_station2", "remnant_weapon_platform1", "remnant_weapon_platform2", "remnant_weapon_platform3", "retribution", "revenant", "sarissa", "scarab", "scintilla", "sentry", "shade", "shard_left", "shard_right", "shepherd", "shrike", "shuttlepod", "spark", "starliner", "station1", "station1_hightech", "station1_midline", "station2", "station2_hightech", "station2_midline", "station3", "station3_hightech", "station3_midline", "station_small", "sunder", "talon", "tarsus", "tempest", "tesseract", "thunder", "trident", "valkyrie", "vanguard", "venture", "vigilance", "warden", "cerberus", "warthog", "wasp", "wayfarer", "wolf", "xyphos", "ziggurat"
+          ]
+        }, {
+          "type": "string"
+        }
+      ],
+      "documentation": {
+        "description": "Enum. Identifier for a specific hull; the hull must exist in the base game or be specified in a ship_data.csv",
+      }
+    },
+    "hullmodIdEnum": {
+      "anyOf": [
+        {
+          "type": "string",
+          "enum": [
+            "advancedshieldemitter", "adaptive_coils", "advancedoptics", "turretgyros", "armoredweapons", "assault_package", "autorepair", "auxiliarythrusters", "ballistic_rangefinder", "blast_doors", "converted_hangar", "converted_fighterbay", "dedicated_targeting_core", "defensive_targeting_array", "eccm", "ecm", "escort_package", "expanded_deck_crew", "magazines", "missleracks", "extendedshieldemitter", "fluxcoil", "fluxdistributor", "shield_shunt", "frontshield", "missile_autoloader", "hardenedshieldemitter", "hardened_subsystems", "heavyarmor", "high_scatter_amp", "pointdefenseai", "pdintegration", "targetingunit", "nav_relay", "neural_interface", "neural_integrator", "frontemitter", "adaptiveshields", "operations_center", "phase_anchor", "recovery_shuttles", "reinforcedhull", "fluxbreakers", "safetyoverrides", "stabilizedshieldemitter", "unstable_injector", "additional_berthing", "augmentedengines", "auxiliary_fuel_tanks", "efficiency_overhaul", "expanded_cargo_holds", "hiressensors", "insulatedengine", "militarized_subsystems", "solar_shielding", "surveying_equipment", "terminator_core", "shared_flux_sink", "stealth_minefield", "stealth_minefield_lt", "bdeck", "chassis_storage", "shield_always_on", "missile_reload", "shielded_holds", "repair_gantry", "phasefield", "fluxshunt", "civgrade", "high_maintenance", "coherer", "tow_cable", "drive_field_stabilizer", "ground_support", "advanced_ground_support", "delicate", "hbi", "vast_hangar", "rugged", "automated", "advancedcore", "supercomputer", "ex_phase_coils", "high_frequency_attractor", "ablative_armor", "distributed_fire_control", "converted_bay", "andrada_mods", "vastbulk", "axialrotation", "anchorrotation", "reduced_explosion", "always_detaches", "never_detaches", "no_weapon_flux", "do_not_fire_through", "shard_spawner", "do_not_back_off", "fourteenth", "heg_militarized", "comp_armor", "comp_hull", "degraded_engines", "degraded_drive_field", "faulty_grid", "unstable_coils", "comp_structure", "glitched_sensors", "malfunctioning_comms", "defective_manufactory", "damaged_deck", "fragile_subsystems", "comp_storage", "increased_maintenance", "erratic_injector", "faulty_auto", "damaged_mounts", "degraded_life_support", "degraded_shields", "destroyed_mounts", "ill_advised"
+          ]
+        }, {
+          "type": "string"
+        }
+      ],
+      "documentation": {
+        "description": "Enum. Identifier for a specific hullmod; the hullmod must exist in the base game or be specified in a hull_mods.csv",
+      }
+    },
+    "weaponIdEnum": {
+      anyOf: [
+        {
+          "type": "string",
+          "enum": [
+            "lightmg", "lightdualmg", "lightmortar", "lightmortar_fighter", "vulcan", "lightac", "lightdualac", "lightag", "fragbomb", "clusterbomb", "bomb", "lightneedler", "railgun", "shredder", "heavymg", "heavymortar", "flak", "arbalest", "dualflak", "chaingun", "heavymauler", "heavyac", "hveldriver", "heavyneedler", "gauss", "hephag", "mark9", "devastator", "mjolnir", "hellbore", "multineedler", "reaper", "atropos", "atropos_single", "hammer", "hammer_single", "swarmer", "swarmer_fighter", "annihilator", "annihilator_fighter", "heatseeker", "harpoon", "harpoon_single", "breach", "sabot", "sabot_single", "sabot_fighter", "gorgon", "gorgon_payload", "gazer", "gazer_payload", "harpoonpod", "dragon", "dragon_payload", "gorgonpod", "gazerpod", "breachpod", "sabotpod", "salamanderpod", "annihilatorpod", "pilum", "phasecl", "phasecl_bomber", "jackhammer", "typhoon", "cyclone", "pilum_large", "hurricane", "dragonpod", "hydra", "hydra_payload", "squall", "locust", "hammerrack", "mininglaser", "pdlaser", "taclaser", "ioncannon", "ioncannon_fighter", "irpulse", "irpulse_fighter", "lrpdlaser", "pdburst", "pdburst_fighter", "amblaster", "phasebeam", "gravitonbeam", "irautolance", "pulselaser", "miningblaster", "heavyblaster", "kineticblaster", "heavyburst", "ionpulser", "ionbeam", "plasma", "hil", "autopulse", "guardian", "tachyonlance", "gigacannon", "minipulser", "shockrepeater", "riftlance", "riftlance_minelayer", "riftbeam", "riftbeam_minelayer", "cryoflux", "cryoblaster", "disintegrator", "riftcascade", "riftcascade_minelayer", "vpdriver", "realitydisruptor", "amsrm", "resonatormrm", "rifttorpedo", "interdictorbeam", "canister_flak", "flarelauncher1", "flarelauncher2", "flarelauncher21", "flarelauncher3", "motelauncher", "motelauncher_hf", "minelayer1", "minelayer2", "od_bomblauncher", "nb_bomblauncher", "tpc", "terminator_missile", "pusherplate_lt", "pusherplate_lt_small", "pusherplate_nova", "sensordish", "lidardish", "novalaser", "blinker_red", "blinker_green", "lights_buffalo", "lights_hound", "targetinglaser1", "targetinglaser2", "targetinglaser3"
+          ]
+        }, {
+          "type": "string"
+        }
+      ],
+      "documentation": {
+        "description": "Enum. Identifier for a specific weapon; the weapon must exist in the base game or be specified in a weapon_data.csv",
+      }
+    },
+    "wingIdEnum": {
+      anyOf: [
+        {
+          "type": "string",
+          "enum": [
+            "broadsword_wing", "xyphos_wing", "sarissa_wing", "gladius_wing", "warthog_wing", "thunder_wing", "claw_wing", "talon_wing", "wasp_wing", "hoplon_wing", "dagger_wing", "piranha_wing", "trident_wing", "perdition_wing", "cobra_wing", "longbow_wing", "mining_drone_wing", "borer_wing", "terminator_wing", "flash_wing", "spark_wing", "lux_wing", "aspect_shock_wing", "aspect_shieldbreaker_wing", "aspect_attack_wing", "aspect_missile_wing"
+          ]
+        }, {
+          "type": "string"
+        }
+      ],
+      "documentation": {
+        "description": "Enum. Identifier for a specific wing; the wing must exist in the base game or be specified in a wing_data.csv",
+      }
+    },
+    "engineFlameStyleEnum": {
+      anyOf: [
+        {
+          "type": "string",
+          "enum": [
+            "midlineFlare", "LOW_TECH", "MIDLINE", "HIGH_TECH", "OMEGA", "COBRA_BOMBER"
+          ]
+        }, {
+          "type": "string"
+        }
+      ],
+      "documentation": {
+        "description": "Enum. Identifier for a specific engine flame style; the weapon must exist in the base game or be specified in an engine_styles.json",
+      }
+    },
+    "hullStyleEnum": {
+      anyOf: [
+        {
+          "type": "string",
+          "enum": [
+            "LOW_TECH", "MIDLINE", "HIGH_TECH"
+          ]
+        }, {
+          "type": "string"
+        }
+      ],
+      "documentation": {
+        "description": "Enum. Identifier for a specific hull style; the hull style must exist in the base game or be specified in a hull_styles.json",
+      }
+    },
+    "shipSkinTagsEnum": {
+      anyOf: [
+        {
+          "type": "string",
+          "enum": [
+            "lowtech_bp", "midline_bp", "hightech_bp", "base_bp", "rare_bp", "dealer", "no_dealer", "low_tech_package", "midline_package", "high_tech_package", "missile_package", "pirate_package", "LP_package", "LC_package", "XIV_package", "heg_aux_package", "ship_bp", "weapon_bp", "fighter_bp", "industry_bp"
+          ]
+        }, {
+          "type": "string"
+        }
+      ],
+      "documentation": {
+        "description": "Enum. Tag applied to a ship skin to specify skin-specific behavior; the tag must be present in the base game or be specified in a FILENAME.FILEEXT",
+      }
+    },
+    "hullSizeEnum": {
+      "type": "string",
+      "enum": [
+        "FIGHTER", "FRIGATE", "DESTROYER", "CRUISER", "CAPITAL_SHIP", "DEFAULT"
+      ],
+      "documentation": {
+        "description": "Enum. Hull size classification of a ship",
+      }
+    },
+    "weaponSizeEnum": {
+      "type": "string",
+      "enum": [
+        "SMALL", "MEDIUM", "LARGE"
+      ],
+      "documentation": {
+        "description": "Enum. Size of a weapon; ie the smallest mount size that a weapon can be installed upon",
+      }
+    },
+    "weaponTypeEnum": {
+      "type": "string",
+      "enum": [
+        "BALLISTIC", "ENERGY", "MISSILE", "LAUNCH_BAY", "UNIVERSAL", "HYBRID", "SYNERGY", "COMPOSITE", "BUILT_IN", "DECORATIVE", "SYSTEM", "STATION_MODULE"
+      ],
+      "documentation": {
+        "description": "Enum. Type of a weapon",
+      }
+    },
+    "mountTypeEnum": {
+      "type": "string",
+      "enum": [
+        "HARDPOINT", "TURRET", "HIDDEN"
+      ],
+      "documentation": {
+        "description": "Enum. Mount type of a weapon slot",
+      }
+    },
+    "weaponGroupFiringModeEnum": {
+      "type": "string",
+      "enum": [
+        "LINKED", "ALTERNATING"
+      ],
+      "documentation": {
+        "description": "Enum. Firing mode of the weapon group.",
+      }
+    },
+    "nonNegativeNumber": {
+      "type": "number",
+      "minimum": 0,
+      "documentation": {
+        "description": "A single number greater than or equal to zero.",
+      }
+    },
+    "nonNegativeInteger": {
+      "type": "integer",
+      "minimum": 0,
+      "documentation": {
+        "description": "A single integer greater than or equal to zero.",
+      }
+    },
+    "nonNegativeIntegerAsString": {
+      "type": "string",
+      "pattern": "^\\d+$",
+      "documentation": {
+        "description": "A single integer greater than or equal to zero, expressed as a string.",
+      }
+    },
+    "pairOfXY": {
+      "type": "array",
+      "items": {
+        "type": "number"
+      },
+      "minItems": 2,
+      "maxItems": 2,
+      "documentation": {
+        "description": "A single pair of x, y coordinates.",
+        "examples": [[27, 46]],
+      }
+    },
+    "arc": {
+      "type": "number",
+      "documentation": {
+        "description": "The arc of something, in degrees.",
+      }
+    },
+    "angle": {
+      "type": "number",
+      "documentation": {
+        "description": "The angle at which something is facing, in degrees.",
+      }
+    },
+    "length": {
+      "$ref": "#/definitions/nonNegativeNumber",
+      "documentation": {
+        "description": "The length of something, in pixels",
+      }
+    },
+    "width": {
+      "$ref": "#/definitions/nonNegativeNumber",
+      "documentation": {
+        "description": "The width of something, in pixels",
+      }
+    },
+    "XYPairRelativeToCenter": {
+      type: "array",
+      "minitems": 2,
+      "maxitems": 2,
+      items: {
+        type: "number"
+      },
+      "documentation": {
+        "description": "The location of something, expressed as a single set of x, y coordinates relative to the ship's center.",
+        "examples": [
+          [-27, 46]
+        ],
+      }
+    },
+    "weaponLocation": {
+      type: "array",
+      items: {
+        type: "number"
+      },
+      "documentation": {
+        "description": "Location of the engine slot on the ship sprite, as x, y coordinates relative to the ship center. If the weapon's <code>type</code> is <code>\"LAUNCH_BAY\"</code>, this array is instead a flattened list of x, y coordinates, with each pair corresponding to a single bay from which wings may emerge.",
+        "examples": [
+          [-27, 46]
+        ],
+      }
+    },
+    "coversColorString": {
+      "type": "string",
+      "pattern": "^$|^(25[0-5]|2[0-4]\\d|1?\\d{1,2}),(25[0-5]|2[0-4]\\d|1?\\d{1,2}),(25[0-5]|2[0-4]\\d|1?\\d{1,2}),(25[0-5]|2[0-4]\\d|1?\\d{1,2})$",
+      "documentation": {
+        "description": "Optional. Defines the color of weapon covers used for empty weapon slots.",
+        "reqs_and_guidelines": ["Formatted as a string of four integers ranging from 0-255 comprising an RGBA designation."],
+        "examples": ["200,205,169,255"],
+      }
+    },
+    "coversColorArray": {
+      "type": "array",
+      "documentation": {
+        "description": "Optional. Defines the color of weapon covers used for empty weapon slots.",
+        "reqs_and_guidelines": ["Formatted as an array of four integers ranging from 0-255 comprising an RGBA designation."],
+        "examples": [[200, 205, 169, 255]],
+      },
+      "items": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 255
+      },
+    }
+  }
+}
